@@ -241,32 +241,44 @@ public static class AuditLog
     }
 
     private static Task MessageUpdatedHandler(Cacheable<IMessage, ulong> before, SocketMessage after,
-        IChannel channel)
+    IChannel channel)
     {
         _ = Task.Run(async () =>
         {
             var channelObj = channel as SocketTextChannel;
-            var beforeObj = await before.GetOrDownloadAsync();
-            if (beforeObj.Content == after.Content || await BlacklistCheck(channelObj))
+            if (channelObj == null)
+            {
+                // Handle the case when the channel is not a SocketTextChannel
                 return;
+            }
+
+            var beforeObj = await before.GetOrDownloadAsync();
+            if (beforeObj == null || beforeObj.Content == null || after.Content == null || beforeObj.Content == after.Content || await BlacklistCheck(channelObj))
+            {
+                return;
+            }
+
             //Set fields
             var fields = new List<EmbedFieldBuilder>
             {
                 new() { Name = "Before", Value = beforeObj.Content },
                 new() { Name = "After", Value = after.Content }
             };
+
             //Set author
             var author = new EmbedAuthorBuilder
             {
                 Name = $"{after.Author.Username}#{after.Author.Discriminator} ({after.Author.Id})",
                 IconUrl = after.Author.GetAvatarUrl()
             };
+
             //Log event
             await LogEvent($"[Message]({after.GetJumpUrl()}) Updated in {channelObj.Mention}",
                 channelObj.Guild.Id.ToString(), Color.LightOrange, fields, author);
         });
         return Task.CompletedTask;
     }
+
 
     public static Task LogEvent(string Content, string GuildId, Color EmbedColor,
         List<EmbedFieldBuilder> Fields = null, EmbedAuthorBuilder Author = null, List<string> attachments = null)
