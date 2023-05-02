@@ -301,8 +301,6 @@ public static class AuditLog
             if (Author != null)
                 embed.WithAuthor(Author);
 
-            //var embedJson = JsonSerializer.Serialize(new List<EmbedBuilder> { embed },
-            //    new JsonSerializerOptions { Converters = { new ColorJsonConverter() } });
             var embedJson = string.Empty;
 
             try
