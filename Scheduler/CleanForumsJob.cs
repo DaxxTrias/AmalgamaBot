@@ -1,10 +1,10 @@
 using Discord;
 using Discord.WebSocket;
-using DougBot.Models;
-using DougBot.Systems;
+using AmalgamaBot.Models;
+using AmalgamaBot.Systems;
 using Quartz;
 
-namespace DougBot.Scheduler;
+namespace AmalgamaBot.Scheduler;
 
 public class CleanForumsJob : IJob
 {

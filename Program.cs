@@ -3,11 +3,11 @@ using Discord;
 using Discord.Commands;
 using Discord.Interactions;
 using Discord.WebSocket;
-using DougBot.Scheduler;
-using DougBot.Systems;
+using AmalgamaBot.Scheduler;
+using AmalgamaBot.Systems;
 using Quartz;
 
-namespace DougBot;
+namespace AmalgamaBot;
 
 public class Program
 {

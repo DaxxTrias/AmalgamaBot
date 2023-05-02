@@ -1,9 +1,9 @@
-using DougBot.Models;
+using AmalgamaBot.Models;
 using TwitchLib.Client;
 using TwitchLib.Client.Events;
 using TwitchLib.Client.Models;
 
-namespace DougBot.Twitch;
+namespace AmalgamaBot.Twitch;
 
 public class IRC
 {

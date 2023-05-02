@@ -6,7 +6,7 @@ using Quartz.Impl.Matchers;
 using Quartz.Logging;
 using Quartz.Spi.CosmosDbJobStore;
 
-namespace DougBot.Scheduler;
+namespace AmalgamaBot.Scheduler;
 
 public static class Quartz
 {

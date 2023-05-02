@@ -1,7 +1,7 @@
 using Discord.WebSocket;
 using Quartz;
 
-namespace DougBot.Scheduler;
+namespace AmalgamaBot.Scheduler;
 
 public class RemoveRoleJob : IJob
 {

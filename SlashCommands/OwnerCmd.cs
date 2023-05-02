@@ -2,7 +2,7 @@ using Discord.Interactions;
 using Quartz;
 using Quartz.Impl.Matchers;
 
-namespace DougBot.SlashCommands;
+namespace AmalgamaBot.SlashCommands;
 
 [Group("owner", "Owner commands")]
 [EnabledInDm(false)]

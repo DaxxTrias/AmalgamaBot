@@ -1,9 +1,9 @@
 using Discord;
 using Discord.WebSocket;
-using DougBot.Models;
+using AmalgamaBot.Models;
 using Fernandezja.ColorHashSharp;
 
-namespace DougBot.Systems;
+namespace AmalgamaBot.Systems;
 
 public static class Events
 {

@@ -1,7 +1,7 @@
 using Discord;
 using Discord.Interactions;
 
-namespace DougBot.SlashCommands;
+namespace AmalgamaBot.SlashCommands;
 [Group("verify", "Verify you are not a bot")]
 [EnabledInDm(false)]
 public class VerifyCmd : InteractionModuleBase

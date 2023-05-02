@@ -4,12 +4,12 @@ using System.Text;
 using System.Text.Json;
 using Discord;
 using Discord.WebSocket;
-using DougBot.Models;
-using DougBot.Scheduler;
+using AmalgamaBot.Models;
+using AmalgamaBot.Scheduler;
 using Quartz;
 using JsonSerializerOptions = System.Text.Json.JsonSerializerOptions;
 
-namespace DougBot.Systems;
+namespace AmalgamaBot.Systems;
 
 public static class AuditLog
 {

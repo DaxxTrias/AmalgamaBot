@@ -3,13 +3,13 @@ using Azure.AI.OpenAI;
 using Common;
 using Discord;
 using Discord.WebSocket;
-using DougBot.Models;
-using DougBot.Systems;
-using DougBot;
+using AmalgamaBot.Models;
+using AmalgamaBot.Systems;
+using AmalgamaBot;
 using System.Text;
 using System.Linq;
 
-namespace DougBot.Systems;
+namespace AmalgamaBot.Systems;
 
 public static class ForumAi
 {

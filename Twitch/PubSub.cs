@@ -1,14 +1,14 @@
 using System.Text.Json;
 using Discord;
-using DougBot.Models;
-using DougBot.Scheduler;
+using AmalgamaBot.Models;
+using AmalgamaBot.Scheduler;
 using Quartz;
 using TwitchLib.PubSub;
 using TwitchLib.PubSub.Enums;
 using TwitchLib.PubSub.Events;
 using JsonSerializerOptions = System.Text.Json.JsonSerializerOptions;
 
-namespace DougBot.Twitch;
+namespace AmalgamaBot.Twitch;
 
 public class PubSub
 {

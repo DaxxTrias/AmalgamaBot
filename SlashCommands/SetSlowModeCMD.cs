@@ -1,7 +1,7 @@
 using Discord;
 using Discord.Interactions;
 
-namespace DougBot.SlashCommands;
+namespace AmalgamaBot.SlashCommands;
 
 public class SetSlowModeCmd : InteractionModuleBase
 {

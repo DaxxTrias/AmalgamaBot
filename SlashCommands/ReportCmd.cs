@@ -2,13 +2,13 @@ using System.Text.Json;
 using Discord;
 using Discord.Interactions;
 using Discord.WebSocket;
-using DougBot.Models;
-using DougBot.Scheduler;
+using AmalgamaBot.Models;
+using AmalgamaBot.Scheduler;
 using Fernandezja.ColorHashSharp;
 using Quartz;
 using JsonSerializerOptions = System.Text.Json.JsonSerializerOptions;
 
-namespace DougBot.SlashCommands;
+namespace AmalgamaBot.SlashCommands;
 public class ReportCmd : InteractionModuleBase
 {
     [MessageCommand("Report Message")]

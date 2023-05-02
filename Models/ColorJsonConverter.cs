@@ -3,7 +3,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Color = Discord.Color;
 
-namespace DougBot.Models;
+namespace AmalgamaBot.Models;
 
 public class ColorJsonConverter : JsonConverter<Color>
 {

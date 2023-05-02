@@ -1,4 +1,4 @@
-using DougBot.Models;
+using AmalgamaBot.Models;
 using TwitchLib.Api;
 using TwitchLib.Api.Auth;
 using TwitchLib.Api.Services;
@@ -7,7 +7,7 @@ using TwitchLib.Client;
 using TwitchLib.Client.Models;
 using TwitchLib.Communication.Interfaces;
 
-namespace DougBot.Twitch;
+namespace AmalgamaBot.Twitch;
 
 public class Twitch
 {

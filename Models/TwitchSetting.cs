@@ -1,4 +1,4 @@
-namespace DougBot.Models;
+namespace AmalgamaBot.Models;
 
 public class TwitchSetting
 {

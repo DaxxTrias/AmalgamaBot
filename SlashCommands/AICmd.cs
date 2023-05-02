@@ -2,9 +2,9 @@ using Azure;
 using Azure.AI.OpenAI;
 using Discord;
 using Discord.Interactions;
-using DougBot.Models;
+using AmalgamaBot.Models;
 
-namespace DougBot.SlashCommands;
+namespace AmalgamaBot.SlashCommands;
 
 [Group("ai", "AI based commands")]
 [EnabledInDm(false)]

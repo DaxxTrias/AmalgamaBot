@@ -1,12 +1,12 @@
 using System.Text.Json;
 using Discord;
 using Discord.WebSocket;
-using DougBot.Models;
+using AmalgamaBot.Models;
 using Fernandezja.ColorHashSharp;
 using Quartz;
 using JsonSerializerOptions = System.Text.Json.JsonSerializerOptions;
 
-namespace DougBot.Scheduler;
+namespace AmalgamaBot.Scheduler;
 
 public class SendDmJob : IJob
     {

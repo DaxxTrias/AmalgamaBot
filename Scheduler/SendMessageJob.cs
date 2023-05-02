@@ -1,11 +1,11 @@
 using System.Text.Json;
 using Discord;
 using Discord.WebSocket;
-using DougBot.Models;
+using AmalgamaBot.Models;
 using Quartz;
 using JsonSerializerOptions = System.Text.Json.JsonSerializerOptions;
 
-namespace DougBot.Scheduler;
+namespace AmalgamaBot.Scheduler;
 
 public class SendMessageJob : IJob
 {

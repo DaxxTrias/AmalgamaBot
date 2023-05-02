@@ -2,11 +2,11 @@ using System.Security.Cryptography;
 using System.Text;
 using Discord;
 using Discord.WebSocket;
-using DougBot.Models;
-using DougBot.Scheduler;
+using AmalgamaBot.Models;
+using AmalgamaBot.Scheduler;
 using Quartz;
 
-namespace DougBot.Systems;
+namespace AmalgamaBot.Systems;
 
 public static class ReactionFilter
 {

@@ -1,13 +1,13 @@
 using System.Linq;
 using System.Text.Json;
 using Discord;
-using DougBot.Models;
+using AmalgamaBot.Models;
 using Quartz;
 using YoutubeExplode;
 using YoutubeExplode.Common;
 using JsonSerializerOptions = System.Text.Json.JsonSerializerOptions;
 
-namespace DougBot.Scheduler;
+namespace AmalgamaBot.Scheduler;
 
 public class CheckYoutubeJob : IJob
 {

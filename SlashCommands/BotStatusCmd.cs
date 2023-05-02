@@ -1,11 +1,11 @@
 using System.Diagnostics;
 using Discord;
 using Discord.Interactions;
-using DougBot.Models;
+using AmalgamaBot.Models;
 using Quartz;
 using Quartz.Impl.Matchers;
 
-namespace DougBot.SlashCommands;
+namespace AmalgamaBot.SlashCommands;
 
 public class BotStatusCmd : InteractionModuleBase
 {
