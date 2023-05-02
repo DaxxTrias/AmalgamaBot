@@ -13,6 +13,7 @@ public class CleanForumsJob : IJob
         var dbGuilds = await Guild.GetGuilds();
         var client = Program._Client;
 
+        //todo: add null check
         foreach (var dbGuild in dbGuilds)
         {
             var guild = client.Guilds.FirstOrDefault(g => g.Id.ToString() == dbGuild.Id);

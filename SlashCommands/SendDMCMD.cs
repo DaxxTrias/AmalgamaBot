@@ -56,6 +56,8 @@ public class SendDMCmd : InteractionModuleBase
 
         var embedJson = JsonSerializer.Serialize(interaction.Message.Embeds,
             new JsonSerializerOptions { Converters = { new ColorJsonConverter() } });
+
+        //todo: nullref check
         var sendMessageJob = JobBuilder.Create<SendMessageJob>()
             .WithIdentity($"sendMessageJob-{Guid.NewGuid()}", dbGuild.Id)
             .UsingJobData("guildId", dbGuild.Id)

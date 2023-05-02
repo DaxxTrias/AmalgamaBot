@@ -17,6 +17,8 @@ public class CheckYoutubeJob : IJob
         {
             var youtube = new YoutubeClient();
             var dbGuilds = await Guild.GetGuilds();
+
+            //todo: nullcheck
             foreach (var dbGuild in dbGuilds)
             {
                 if(dbGuild.YoutubeSettings == null) continue;

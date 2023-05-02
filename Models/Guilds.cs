@@ -18,6 +18,30 @@ public class Guild
     public string? LogBlacklistChannels { get; set; }
     public TwitchSetting TwitchSettings { get; set; }
 
+    public static async Task<Guild?> GetGuild(string id)
+    {
+        await using var db = new Database.DougBotContext();
+        return await db.Guilds.FindAsync(id);
+    }
+
+    public static async Task<List<Guild>?> GetGuilds()
+    {
+        await using var db = new Database.DougBotContext();
+        return await db.Guilds.ToListAsync();
+    }
+
+    public async Task Update()
+    {
+        if (string.IsNullOrEmpty(Id))
+        {
+            throw new InvalidOperationException("Cannot update a Guild with a null or empty Id.");
+        }
+
+        await using var db = new Database.DougBotContext();
+        db.Guilds.Update(this);
+        await db.SaveChangesAsync();
+    }
+    /*
     public static async Task<Guild> GetGuild(string id)
     {
         await using var db = new Database.DougBotContext();
@@ -36,4 +60,5 @@ public class Guild
         db.Guilds.Update(this);
         await db.SaveChangesAsync();
     }
+    */
 }

@@ -24,6 +24,8 @@ public static class ReactionFilter
             {
                 dbGuilds = await Guild.GetGuilds();
                 emoteWhitelists.Clear();
+
+                //todo: nullcheck
                 foreach (var dbGuild in dbGuilds)
                 {
                     //If settings are null, skip
