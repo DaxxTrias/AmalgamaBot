@@ -13,6 +13,8 @@ public class Database
             var accountEndpoint = Environment.GetEnvironmentVariable("ACCOUNT_ENDPOINT");
             var accountKey = Environment.GetEnvironmentVariable("ACCOUNT_KEY");
             var databaseName = Environment.GetEnvironmentVariable("DATABASE_NAME");
+
+            //todo: check if database exists, if they dont create one or at least warn the user clearly
             optionsBuilder.UseCosmos(accountEndpoint, accountKey, databaseName);
         }
 

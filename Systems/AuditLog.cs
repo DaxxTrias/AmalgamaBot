@@ -278,14 +278,39 @@ public static class AuditLog
                 .WithDescription(Content)
                 .WithColor(EmbedColor)
                 .WithCurrentTimestamp();
+
             if (Fields != null)
-                foreach (var field in Fields.Where(f => f.Name != "null"))
+            {
+                foreach (var field in Fields.Where(f => f != null && f.Name != "null"))
+                {
                     embed.AddField(field);
+                }
+            }
             if (Author != null)
                 embed.WithAuthor(Author);
 
-            var embedJson = JsonSerializer.Serialize(new List<EmbedBuilder> { embed },
-                new JsonSerializerOptions { Converters = { new ColorJsonConverter() } });
+            //var embedJson = JsonSerializer.Serialize(new List<EmbedBuilder> { embed },
+            //    new JsonSerializerOptions { Converters = { new ColorJsonConverter() } });
+            var embedJson = string.Empty;
+
+            try
+            {
+                embedJson = JsonSerializer.Serialize(new List<EmbedBuilder> { embed },
+                    new JsonSerializerOptions { Converters = { new ColorJsonConverter() }});
+            }
+            catch (Exception ex)
+            {
+                //todo: log and handle it
+                return;
+            }
+
+            if (dbGuild == null || string.IsNullOrEmpty(dbGuild.LogChannel))
+            {
+                //todo: log and handle it
+                return;
+            }
+
+            //todo: check logchannel for null and handle it aswell
             var sendMessageJob = JobBuilder.Create<SendMessageJob>()
                 .WithIdentity($"sendMessageJob-{Guid.NewGuid()}", GuildId)
                 .UsingJobData("guildId", GuildId)
@@ -307,7 +332,15 @@ public static class AuditLog
     private static async Task<bool> BlacklistCheck(SocketTextChannel channel)
     {
         var dbGuild = await Guild.GetGuild(channel.Guild.Id.ToString());
+
+        if (dbGuild == null)
+        {
+            // Handle the case when the guild is not found in the database, return false or throw an exception, as appropriate.
+            return false;
+        }
+
         return dbGuild.LogBlacklistChannels.Contains(channel.Id.ToString()) ||
                dbGuild.LogBlacklistChannels.Contains(channel.CategoryId.ToString());
     }
+
 }
