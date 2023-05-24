@@ -16,28 +16,62 @@ public static class ReactionFilter
     public static async Task Monitor()
     {
         var client = Program._Client;
+        if (client == null)
+        {
+            Console.WriteLine("Client is null. Please initialize the client before monitoring.");
+            return;
+        }
+
         client.ReactionAdded += ReactionAddedHandler;
         Console.WriteLine("ReactionFilter Initialized");
+
         while (true)
         {
             try
             {
-                dbGuilds = await Guild.GetGuilds();
+                var dbGuilds = await Guild.GetGuilds();
+                if (dbGuilds == null)
+                {
+                    Console.WriteLine("No guilds found.");
+                    continue;
+                }
+
+                Console.WriteLine($"Found {dbGuilds.Count} guilds in the database.");  // New logging line
+
                 emoteWhitelists.Clear();
 
-                //todo: nullcheck
                 foreach (var dbGuild in dbGuilds)
                 {
                     //If settings are null, skip
-                    if (string.IsNullOrEmpty(dbGuild.ReactionFilterEmotes))
+                    if (string.IsNullOrEmpty(dbGuild?.ReactionFilterEmotes))
+                    {
+                        Console.WriteLine($"Skipping guild with id {dbGuild.Id} due to missing ReactionFilterEmotes.");  // New logging line
                         continue;
+                    }
+
                     //Get guild from client
                     var guild = client.Guilds.FirstOrDefault(g => g.Id.ToString() == dbGuild.Id);
+                    if (guild == null)
+                    {
+                        Console.WriteLine($"No guild found with id: {dbGuild.Id}");
+                        continue;
+                    }
+
+                    Console.WriteLine($"Processing guild with id {guild.Id}.");  // New logging line
+
                     //Compile whitelist
                     var guildEmotes = guild.Emotes;
+                    if (guildEmotes == null)
+                    {
+                        Console.WriteLine($"No emotes found for guild: {guild.Id}");
+                        continue;
+                    }
+
                     var emoteWhitelist = guildEmotes.Select(e => e.Name).ToList();
                     emoteWhitelist.AddRange(dbGuild.ReactionFilterEmotes.Split(','));
                     emoteWhitelists.Add(guild.Id, emoteWhitelist);
+
+                    Console.WriteLine($"Compiled emote whitelist for guild with id {guild.Id}.");  // New logging line
                 }
 
                 await Task.Delay(600000);
@@ -48,6 +82,8 @@ public static class ReactionFilter
             }
         }
     }
+
+
 
     private static Task ReactionAddedHandler(Cacheable<IUserMessage, ulong> Message,
         Cacheable<IMessageChannel, ulong> Channel, SocketReaction Reaction)

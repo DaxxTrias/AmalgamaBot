@@ -21,18 +21,25 @@ public class Guild
     public static async Task<Guild?> GetGuild(string id)
     {
         await using var db = new Database.DougBotContext();
-        return await db.Guilds.FindAsync(id);
+        return await db.Guilds.FindAsync(id) ?? await Task.FromResult<Guild?>(null);
     }
 
     public static async Task<List<Guild>?> GetGuilds()
     {
         await using var db = new Database.DougBotContext();
-        return await db.Guilds.ToListAsync();
+        var guilds = await db.Guilds.ToListAsync();
+        return guilds?.Count > 0 ? guilds : null;
     }
+
+    //public static async Task<List<Guild>?> GetGuilds()
+    //{
+    //    await using var db = new Database.DougBotContext();
+    //    return await db.Guilds.ToListAsync();
+    //}
 
     public async Task Update()
     {
-        if (string.IsNullOrEmpty(Id))
+        if (string.IsNullOrWhiteSpace(Id))
         {
             throw new InvalidOperationException("Cannot update a Guild with a null or empty Id.");
         }

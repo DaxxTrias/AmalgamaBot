@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace AmalgamaBot.Models;
 
@@ -6,7 +7,7 @@ public class Database
 {
     public class DougBotContext : DbContext
     {
-        public DbSet<Guild> Guilds { get; set; }
+        public DbSet<Guild>? Guilds { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -28,6 +29,9 @@ public class Database
                 .ToContainer("Guilds")
                 .HasPartitionKey(e => e.Id);
             modelBuilder.Entity<Guild>().OwnsMany(p => p.YoutubeSettings);
+
+            //output results to console
+            Console.WriteLine(modelBuilder.Model.ToString());
         }
     }
 }

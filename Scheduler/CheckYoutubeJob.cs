@@ -18,29 +18,27 @@ public class CheckYoutubeJob : IJob
             var youtube = new YoutubeClient();
             var dbGuilds = await Guild.GetGuilds();
 
-            //todo: nullcheck
-            foreach (var dbGuild in dbGuilds)
+            foreach (var dbGuild in dbGuilds.Where(g => g?.YoutubeSettings?.Any() ?? false))
             {
-                if(dbGuild.YoutubeSettings == null) continue;
-                foreach (var dbYoutube in dbGuild.YoutubeSettings)
+                foreach (var dbYoutube in dbGuild.YoutubeSettings.Where(y => !string.IsNullOrWhiteSpace(y?.Id)))
                 {
                     try
                     {
                         var ytChannel = await youtube.Channels.GetAsync(dbYoutube.Id);
                         var video = (await youtube.Channels.GetUploadsAsync(dbYoutube.Id)).FirstOrDefault();
 
-                        if (video.Id.ToString() == dbYoutube.LastVideoId) continue;
+                        if (video?.Id.ToString() == dbYoutube.LastVideoId) continue;
 
                         var mentionRole = "";
                         if (dbYoutube.Id == "UCzL0SBEypNk4slpzSbxo01g" && !video.Title.Contains("VOD"))
                             mentionRole = "<@&812501073289805884>";
-                        else if (video.Duration.Value.TotalMinutes > 2) mentionRole = $"<@&{dbYoutube.MentionRole}>";
+                        else if (video?.Duration?.TotalMinutes > 2) mentionRole = $"<@&{dbYoutube.MentionRole}>";
 
                         var embed = new EmbedBuilder()
-                            .WithAuthor(ytChannel.Title, ytChannel.Thumbnails[0].Url, ytChannel.Url)
-                            .WithTitle(video.Title)
-                            .WithImageUrl(video.Thumbnails.OrderByDescending(t => t.Resolution.Area).First().Url)
-                            .WithUrl(video.Url);
+                            .WithAuthor(ytChannel.Title, ytChannel.Thumbnails?[0].Url, ytChannel.Url)
+                            .WithTitle(video?.Title)
+                            .WithImageUrl(video?.Thumbnails?.OrderByDescending(t => t.Resolution.Area)?.FirstOrDefault()?.Url)
+                            .WithUrl(video?.Url);
                         var embedJson = JsonSerializer.Serialize(new List<EmbedBuilder> { embed },
                             new JsonSerializerOptions { Converters = { new ColorJsonConverter() } });
 
@@ -58,20 +56,19 @@ public class CheckYoutubeJob : IJob
                             .StartNow()
                             .Build();
                         await Quartz.MemorySchedulerInstance.ScheduleJob(sendMessageJob, sendMessageTrigger);
-                        dbYoutube.LastVideoId = video.Id;
+                        dbYoutube.LastVideoId = video?.Id.ToString();
                         await dbGuild.Update();
                     }
                     catch (Exception ex)
                     {
-                        Console.WriteLine(ex);
-                        throw;
+                        Console.Error.WriteLine(ex);
                     }
                 }
             }
         }
         catch (Exception ex)
         {
-            Console.WriteLine(ex);
+            Console.Error.WriteLine(ex);
         }
     }
 }

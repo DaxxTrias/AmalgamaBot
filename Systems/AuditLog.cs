@@ -281,17 +281,24 @@ public static class AuditLog
 
 
     public static Task LogEvent(string Content, string GuildId, Color EmbedColor,
-        List<EmbedFieldBuilder> Fields = null, EmbedAuthorBuilder Author = null, List<string> attachments = null)
+            List<EmbedFieldBuilder> Fields = null, EmbedAuthorBuilder Author = null, List<string> attachments = null)
     {
-
-        if (GuildId == null || Content == null || EmbedColor == null)
+        if (string.IsNullOrEmpty(GuildId) || string.IsNullOrEmpty(Content) || EmbedColor == null)
         {
-            Console.WriteLine("LogEvent error: null parameter detected");
+            Console.WriteLine("LogEvent error: null or empty parameter detected");
+            return Task.CompletedTask;
         }
 
         _ = Task.Run(async () =>
         {
             var dbGuild = await Guild.GetGuild(GuildId);
+            if (dbGuild == null || string.IsNullOrEmpty(dbGuild.LogChannel))
+            {
+                //todo which is it though
+                Console.WriteLine("LogEvent error: guild or log channel is not available or invalid");
+                return;
+            }
+
             var embed = new EmbedBuilder()
                 .WithDescription(Content)
                 .WithColor(EmbedColor)
@@ -299,7 +306,7 @@ public static class AuditLog
 
             if (Fields != null)
             {
-                foreach (var field in Fields.Where(f => f != null && f.Name != "null"))
+                foreach (var field in Fields.Where(f => f != null && !string.IsNullOrEmpty(f.Name)))
                 {
                     embed.AddField(field);
                 }
@@ -312,21 +319,14 @@ public static class AuditLog
             try
             {
                 embedJson = JsonSerializer.Serialize(new List<EmbedBuilder> { embed },
-                    new JsonSerializerOptions { Converters = { new ColorJsonConverter() }});
+                    new JsonSerializerOptions { Converters = { new ColorJsonConverter() } });
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"LogEvent error: failed to serialize embed: {ex.Message}");
-                //return;
+                return;
             }
 
-            if (dbGuild == null || string.IsNullOrEmpty(dbGuild.LogChannel))
-            {
-                Console.WriteLine("LogEvent error: guild or log channel is not available or invalid");
-                //return;
-            }
-
-            //todo: check logchannel for null and handle it aswell
             var sendMessageJob = JobBuilder.Create<SendMessageJob>()
                 .WithIdentity($"sendMessageJob-{Guid.NewGuid()}", GuildId)
                 .UsingJobData("guildId", GuildId)
@@ -334,7 +334,7 @@ public static class AuditLog
                 .UsingJobData("message", "")
                 .UsingJobData("embedBuilders", embedJson)
                 .UsingJobData("ping", "true")
-                .UsingJobData("attachments", null)
+                .UsingJobData("attachments", null) // If you want to handle attachments, it should be dealt with here.
                 .Build();
             var sendMessageTrigger = TriggerBuilder.Create()
                 .WithIdentity($"sendMessageTrigger-{Guid.NewGuid()}", GuildId)
@@ -344,6 +344,7 @@ public static class AuditLog
         });
         return Task.CompletedTask;
     }
+
 
     private static async Task<bool> BlacklistCheck(SocketTextChannel channel)
     {
