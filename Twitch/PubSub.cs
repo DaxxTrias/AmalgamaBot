@@ -40,7 +40,7 @@ public class PubSub
                 {
                     var endDate = Prediction.CreatedAt.Value.AddSeconds(Prediction.PredictionTime);
                     var endDateOffset = new DateTimeOffset(endDate).ToUniversalTime().ToUnixTimeSeconds();
-                    messageContent = "<@&1080237787174948936>";
+                    messageContent = "<@&170185463200481280>";
                     embed.WithTitle($"Prediction Created: {Prediction.Title}");
                     embed.WithDescription($"Voting ends: <t:{endDateOffset}:R>");
                     embed.WithColor(Color.Green);
@@ -116,8 +116,8 @@ public class PubSub
                             string.Join("\n", cheatHighRollers.Select(p => $"{p.DisplayName} - {p.Points:n0}")), true);
                     }
                     var discClient = Program._Client;
-                    var guild = discClient.GetGuild(567141138021089308);
-                    var channel = guild.GetTextChannel(886548334154760242);
+                    var guild = discClient.GetGuild(286091280537092097);
+                    var channel = guild.GetTextChannel(1051401727787671613);
                     await channel.SendMessageAsync("", embed: cheatEmbed.Build());
                 }
                 #endregion
@@ -128,16 +128,16 @@ public class PubSub
                 var embedJson = JsonSerializer.Serialize(new List<EmbedBuilder> { embed },
                     new JsonSerializerOptions { Converters = { new ColorJsonConverter() } });
                 var sendMessageJob = JobBuilder.Create<SendMessageJob>()
-                    .WithIdentity($"sendMessageJob-{Guid.NewGuid()}", "567141138021089308")
-                    .UsingJobData("guildId", "567141138021089308")
-                    .UsingJobData("channelId", "1070317311505997864")
+                    .WithIdentity($"sendMessageJob-{Guid.NewGuid()}", "286091280537092097")
+                    .UsingJobData("guildId", "286091280537092097")
+                    .UsingJobData("channelId", "1051401727787671613")
                     .UsingJobData("message", messageContent)
                     .UsingJobData("embedBuilders", embedJson)
                     .UsingJobData("ping", "true")
                     .UsingJobData("attachments", null)
                     .Build();
                 var sendMessageTrigger = TriggerBuilder.Create()
-                    .WithIdentity($"sendMessageTrigger-{Guid.NewGuid()}", "567141138021089308")
+                    .WithIdentity($"sendMessageTrigger-{Guid.NewGuid()}", "286091280537092097")
                     .StartNow()
                     .Build();
                 await Scheduler.Quartz.MemorySchedulerInstance.ScheduleJob(sendMessageJob, sendMessageTrigger);
@@ -175,16 +175,16 @@ public class PubSub
                 var embedJson = JsonSerializer.Serialize(new List<EmbedBuilder> { embed },
                     new JsonSerializerOptions { Converters = { new ColorJsonConverter() } });
                 var sendMessageJob = JobBuilder.Create<SendMessageJob>()
-                    .WithIdentity($"sendMessageJob-{Guid.NewGuid()}", "567141138021089308")
-                    .UsingJobData("guildId", "567141138021089308")
-                    .UsingJobData("channelId", "1080251555619557445")
+                    .WithIdentity($"sendMessageJob-{Guid.NewGuid()}", "286091280537092097")
+                    .UsingJobData("guildId", "286091280537092097")
+                    .UsingJobData("channelId", "1051401727787671613")
                     .UsingJobData("message", "")
                     .UsingJobData("embedBuilders", embedJson)
                     .UsingJobData("ping", "true")
                     .UsingJobData("attachments", null)
                     .Build();
                 var sendMessageTrigger = TriggerBuilder.Create()
-                    .WithIdentity($"sendMessageTrigger-{Guid.NewGuid()}", "567141138021089308")
+                    .WithIdentity($"sendMessageTrigger-{Guid.NewGuid()}", "286091280537092097")
                     .StartNow()
                     .Build();
                 await Scheduler.Quartz.MemorySchedulerInstance.ScheduleJob(sendMessageJob, sendMessageTrigger);

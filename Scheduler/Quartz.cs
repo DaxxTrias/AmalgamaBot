@@ -18,7 +18,7 @@ public static class Quartz
         var properties = new NameValueCollection
         {
             [StdSchedulerFactory.PropertySchedulerInstanceName] = "QuartzScheduler",
-            [StdSchedulerFactory.PropertySchedulerInstanceId] = $"DougBot",
+            [StdSchedulerFactory.PropertySchedulerInstanceId] = $"frogbot",
             [StdSchedulerFactory.PropertyJobStoreType] = typeof(CosmosDbJobStore).AssemblyQualifiedName,
             [$"{StdSchedulerFactory.PropertyObjectSerializer}.type"] = "json",
             [$"{StdSchedulerFactory.PropertyJobStorePrefix}.Endpoint"] = Environment.GetEnvironmentVariable("ACCOUNT_ENDPOINT"),

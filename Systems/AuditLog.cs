@@ -283,6 +283,12 @@ public static class AuditLog
     public static Task LogEvent(string Content, string GuildId, Color EmbedColor,
         List<EmbedFieldBuilder> Fields = null, EmbedAuthorBuilder Author = null, List<string> attachments = null)
     {
+
+        if (GuildId == null || Content == null || EmbedColor == null)
+        {
+            Console.WriteLine("LogEvent error: null parameter detected");
+        }
+
         _ = Task.Run(async () =>
         {
             var dbGuild = await Guild.GetGuild(GuildId);
@@ -310,14 +316,14 @@ public static class AuditLog
             }
             catch (Exception ex)
             {
-                //todo: log and handle it
-                return;
+                Console.WriteLine($"LogEvent error: failed to serialize embed: {ex.Message}");
+                //return;
             }
 
             if (dbGuild == null || string.IsNullOrEmpty(dbGuild.LogChannel))
             {
-                //todo: log and handle it
-                return;
+                Console.WriteLine("LogEvent error: guild or log channel is not available or invalid");
+                //return;
             }
 
             //todo: check logchannel for null and handle it aswell

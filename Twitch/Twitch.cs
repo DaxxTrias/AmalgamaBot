@@ -18,7 +18,13 @@ public class Twitch
         {
             Console.WriteLine("Twitch Initialized");
             //Load settings
-            var settings = (await Guild.GetGuild("567141138021089308")).TwitchSettings;
+            var guild = await Guild.GetGuild("286091280537092097");
+            if (guild == null)
+            {
+                Console.WriteLine("Guild not found");
+                return;
+            }
+            var settings = guild.TwitchSettings;
             //Setup API
             API = new TwitchAPI();
             var monitor = new LiveStreamMonitorService(API);
@@ -27,19 +33,19 @@ public class Twitch
             monitor.OnStreamOffline += Monitor_OnStreamOffline;
             monitor.Start();
             //Setup tokens
-            RefreshResponse dougRefresh = null;
+            RefreshResponse frogRefresh = null;
             RefreshResponse botRefresh = null;
             //Setup PubSub
             var pubSub = new PubSub().Create();
             pubSub.OnPubSubServiceConnected += (Sender, e) =>
             {
-                while (dougRefresh == null)
+                while (frogRefresh == null)
                 {
                     Console.WriteLine("Waiting for tokens");
                     Task.Delay(1000);
                 }
 
-                pubSub.SendTopics(dougRefresh.AccessToken);
+                pubSub.SendTopics(frogRefresh.AccessToken);
                 Console.WriteLine("PubSub Connected");
             };
             //Setup IRC anonymously
@@ -48,6 +54,7 @@ public class Twitch
             {
                 irc.JoinChannel(settings.ChannelName);
             };
+
             //Refresh token when expired
             while (true)
             {
@@ -55,10 +62,11 @@ public class Twitch
                 {
                     Console.WriteLine("Refreshing Tokens");
                     //Refresh tokens
+
                     botRefresh =
                         await API.Auth.RefreshAuthTokenAsync(settings.BotRefreshToken, settings.ClientSecret,
                             settings.ClientId);
-                    dougRefresh =
+                    frogRefresh =
                         await API.Auth.RefreshAuthTokenAsync(settings.ChannelRefreshToken, settings.ClientSecret,
                             settings.ClientId);
                     API.Settings.AccessToken = botRefresh.AccessToken;
@@ -72,9 +80,9 @@ public class Twitch
                     pubSub.ListenToChannelPoints(settings.ChannelId);
                     pubSub.ListenToPredictions(settings.ChannelId);
                     //Get the lowest refresh time
-                    var refreshTime = botRefresh.ExpiresIn < dougRefresh.ExpiresIn
+                    var refreshTime = botRefresh.ExpiresIn < frogRefresh.ExpiresIn
                         ? botRefresh.ExpiresIn
-                        : dougRefresh.ExpiresIn;
+                        : frogRefresh.ExpiresIn;
                     Console.WriteLine(
                         $"Refreshed Tokens in {refreshTime} seconds at {DateTime.UtcNow.AddSeconds(refreshTime):HH:mm}");
                     await Task.Delay((refreshTime - 1800) * 1000);
@@ -91,7 +99,7 @@ public class Twitch
         }
         catch (Exception e)
         {
-            Console.WriteLine(e);
+            Console.WriteLine($"An error occurred: {e.Message}\n{e.StackTrace}");
         }
     }
 

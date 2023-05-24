@@ -11,9 +11,9 @@ public class CleanForumsJob : IJob
     public async Task Execute(IJobExecutionContext context)
     {
         var dbGuilds = await Guild.GetGuilds();
+        //todo: nullref check dbguild
         var client = Program._Client;
 
-        //todo: add null check
         foreach (var dbGuild in dbGuilds)
         {
             var guild = client.Guilds.FirstOrDefault(g => g.Id.ToString() == dbGuild.Id);

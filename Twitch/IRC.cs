@@ -32,7 +32,7 @@ public class IRC
         {
             try
             {
-                var dbGuild = await Guild.GetGuild("567141138021089308");
+                var dbGuild = await Guild.GetGuild("286091280537092097");
                 containsBlock = dbGuild.TwitchSettings.ContainsBlock;
                 blockedWords = dbGuild.TwitchSettings.BlockedWords;
                 endsWithBlock = dbGuild.TwitchSettings.EndsWithBlock;

@@ -54,7 +54,7 @@ public class Program
             Scheduler.Quartz.InitializeMemory();
             AuditLog.Monitor();
             Events.Monitor();
-            //Twitch.Twitch.RunClient();
+            Twitch.Twitch.RunClient();
             ReactionFilter.Monitor();
             ForumAi.Monitor();
             Scheduler.Quartz.CoreJobs();

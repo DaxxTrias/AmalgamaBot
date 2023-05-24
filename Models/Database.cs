@@ -19,7 +19,6 @@ public class Database
                 throw new InvalidOperationException("Environment variables for the Azure Cosmos DB connection are not set correctly.");
             }
 
-            //todo: check if database exists, if they dont create one or at least warn the user clearly
             optionsBuilder.UseCosmos(accountEndpoint, accountKey, databaseName);
         }
 
