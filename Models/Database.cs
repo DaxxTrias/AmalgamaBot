@@ -21,6 +21,10 @@ public class Database
             }
 
             optionsBuilder.UseCosmos(accountEndpoint, accountKey, databaseName);
+            //optionsBuilder
+            //.UseCosmos(accountEndpoint, accountKey, databaseName)
+            //.EnableSensitiveDataLogging()
+            //.UseLoggerFactory(LoggerFactory.Create(builder => builder.AddConsole()));
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
