@@ -96,6 +96,15 @@ internal class ConsoleLogProvider : ILogProvider
             if (exception != null)
             {
                 Console.WriteLine("[" + DateTime.Now.ToLongTimeString() + "] [" + level + "] " + exception);
+                if (exception != null)
+                {
+                    Console.WriteLine("[" + DateTime.Now.ToLongTimeString() + "] [" + level + "] " + exception);
+                    var jobName = func().Split(' ')[1];
+                    if(jobName!=null && jobName.Split('.').Length>1)
+                    {
+                        Quartz._FailedJobNames.Add(jobName.Split('.')[1]);              
+                    }
+                }
                 Quartz._FailedJobNames.Add(func().Split(' ')[1].Split(".")[1]);
             }
             return true;
